@@ -88,14 +88,12 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
 void CustomerWidget::feedbackSubmitted()
 {
 
-
     QStringList *list = new QStringList();
     QString *temp = new QString(plainText->toPlainText());
     list->append(temp->split("\n"));
 
     QFile feedbackFile("F:/Restaurant-Management-System-GUI/feedback.txt");
-
-    if(feedbackFile.open(QIODevice::NewOnly))
+    if(feedbackFile.open(QIODevice::WriteOnly))
     {
         feedbackFile.reset();
         QTextStream stream(&feedbackFile);
@@ -109,11 +107,7 @@ void CustomerWidget::feedbackSubmitted()
 
         feedbackFile.close();
     }
-    else
-    {
-      errorMessage->setInformativeText("hd");
-      errorMessage->show();
-    }
+    else{}
 
 
 }
