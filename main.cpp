@@ -1,11 +1,12 @@
-#include "adminwidget.h"
+#include "mainwidget.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     AdminWidget w;
-    w.showNormal();
+    CustomerWidget c;
+    c.showNormal();
 
     return a.exec();
 }

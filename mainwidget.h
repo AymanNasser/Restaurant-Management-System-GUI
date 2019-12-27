@@ -4,12 +4,19 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QWidget>
+#include "customerwidget.h"
+#include "adminwidget.h"
+
 #include <bits/stdc++.h>
+
 class MainWidget : public QMainWindow
 {
     Q_OBJECT
+private:
+    CustomerWidget *customer;
 public:
     explicit MainWidget(QWidget *parent = nullptr);
+
 
 signals:
 
