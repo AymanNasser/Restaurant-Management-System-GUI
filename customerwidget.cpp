@@ -17,12 +17,13 @@ CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
 
 void CustomerWidget::adjustToolBar()
 {
+    QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
 
-    QIcon I_Order("F:/Restaurant-Management-System-GUI/Icons/meal.png"); QString S_Order("Order");
-    QIcon I_Menu("F:/Restaurant-Management-System-GUI/Icons/menu.png"); QString S_Menu("Menu");
-    QIcon I_FeedBack("F:/Restaurant-Management-System-GUI/Icons/questionnaire.png"); QString S_FeedBack("FeedBack");
-    QIcon I_Table("F:/Restaurant-Management-System-GUI/Icons/table.png"); QString S_Table("Table");
-    QIcon I_Status("F:/Restaurant-Management-System-GUI/Icons/loading.png"); QString S_Status("Status");
+    QIcon I_Order(iconPath + "meal.png"); QString S_Order("Order");
+    QIcon I_Menu(iconPath + "menu.png"); QString S_Menu("Menu");
+    QIcon I_FeedBack(iconPath + "questionnaire.png"); QString S_FeedBack("FeedBack");
+    QIcon I_Table(iconPath + "table.png"); QString S_Table("Table");
+    QIcon I_Status(iconPath + "loading.png"); QString S_Status("Status");
 
     toolBar->setIconSize(QSize(70,70));
     toolBar->setOrientation(Qt::Horizontal);
@@ -92,10 +93,9 @@ void CustomerWidget::feedbackSubmitted()
     QString *temp = new QString(plainText->toPlainText());
     list->append(temp->split("\n"));
 
-    QFile feedbackFile("F:/Restaurant-Management-System-GUI/feedback.txt");
+    QFile feedbackFile( QCoreApplication::applicationDirPath() + "/../../feedback.txt");
     if(feedbackFile.open(QIODevice::WriteOnly))
     {
-        feedbackFile.reset();
         QTextStream stream(&feedbackFile);
         char i =0;
         while(i < list->size())
