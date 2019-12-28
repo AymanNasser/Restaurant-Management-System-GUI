@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QWidget>
+#include <QString>
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -14,7 +16,7 @@ private:
     bool status;
 public:
     Table();
-    bool getTableStatus();
+    QString getTableStatus();
     void setTableStatus();
 
 };

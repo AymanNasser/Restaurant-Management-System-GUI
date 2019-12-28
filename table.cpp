@@ -7,9 +7,13 @@ Table::Table()
     status = 1;
 }
 
-bool Table::getTableStatus()
+QString Table::getTableStatus()
 {
-    return status;
+    if(status == 0)
+    {
+        return "Reserved";
+    }
+    return "Not Reserved";
 }
 
 void Table::setTableStatus()

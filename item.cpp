@@ -48,6 +48,11 @@ QSpinBox *Item::getSpinBox()
     return itemSpinBox;
 }
 
+void Item::setSpinBox()
+{
+    itemSpinBox = new QSpinBox() ;
+}
+
 bool Item::operator ==(Item item1)
 {
     if ( (item1.get_itemID() == itemID) && ((item1.get_itemname()) == itemname) \

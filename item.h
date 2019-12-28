@@ -31,6 +31,7 @@ public:
     int get_itemID();
     QString get_itemname();
     QSpinBox *getSpinBox();
+    void setSpinBox();
 
     /* Operator Overloaded to compare between two item objects */
     bool operator == (Item item1);

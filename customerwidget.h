@@ -19,6 +19,7 @@
 #include <iostream>
 #include <QSpinBox>
 #include <QDebug>
+#include <QLineEdit>
 
 #include <bits/stdc++.h>
 
@@ -35,13 +36,13 @@ class CustomerWidget : public QWidget
 
 private:
     QToolBar *toolBar, *toolBarMenu;
-    QToolBar *toolBarTable;
+    QToolBar *toolBarTable[3];
     QGridLayout *custGrid;
     QMessageBox *errorMessage;
     QPlainTextEdit *plainText;
-    QPushButton *submit;
+    QPushButton *submit,*reserveTable;
     Table *systemTable;
-
+    QLineEdit *tableNumber;
 
 
 
@@ -68,15 +69,12 @@ public:
     void viewTable();
 
 
-
-
-
-
 signals:
 
 public slots:
     void handleToolBar(QAction*);
     void feedbackSubmitted();
+    void setTable();
 
 
 };
