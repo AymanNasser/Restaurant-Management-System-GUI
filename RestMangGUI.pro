@@ -26,14 +26,18 @@ CONFIG += c++11
 
 SOURCES += \
         customerwidget.cpp \
+        item.cpp \
         main.cpp \
         adminwidget.cpp \
-        mainwidget.cpp
+        mainwidget.cpp \
+        menu.cpp
 
 HEADERS += \
         adminwidget.h \
         customerwidget.h \
-        mainwidget.h
+        item.h \
+        mainwidget.h \
+        menu.h
 
 FORMS += \
         adminwidget.ui

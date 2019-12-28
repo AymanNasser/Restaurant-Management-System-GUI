@@ -7,15 +7,23 @@
 #include "customerwidget.h"
 #include "adminwidget.h"
 
+
 #include <bits/stdc++.h>
+using namespace std;
 
 class MainWidget : public QMainWindow
 {
     Q_OBJECT
 private:
     CustomerWidget *customer;
+
 public:
     explicit MainWidget(QWidget *parent = nullptr);
+
+//    vector <Order*> AllOrdersVect;
+//        Order customizedOrder;
+
+//        Table tablesArr;
 
 
 signals:

@@ -23,7 +23,7 @@ public:
     {
         if (AdminWidget->objectName().isEmpty())
             AdminWidget->setObjectName(QString::fromUtf8("AdminWidget"));
-        AdminWidget->resize(400, 300);
+        AdminWidget->resize(823, 561);
 
         retranslateUi(AdminWidget);
 

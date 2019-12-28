@@ -2,7 +2,11 @@
 
 MainWidget::MainWidget(QWidget *parent) : QMainWindow(parent)
 {
-//    this->customer = new CustomerWidget();
-//    this->setCentralWidget(this->customer);
+
+
+//    for (int i =0;i<6;i++) {
+//        menuItems->setItem(rand()%1,rand()%2,1,rand()%7,"Item no" + (char)i);
+//        integratedMenu->addItem(menuItems);
+//    }
 
 }

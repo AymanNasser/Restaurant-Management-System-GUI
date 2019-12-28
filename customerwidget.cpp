@@ -7,15 +7,42 @@ CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
         errorMessage = new QMessageBox();
         submit = new QPushButton("Submit FeedBack");
 
-        adjustToolBar();
+        toolBarMenu = new QToolBar();
+
+        adjustMainToolBar();
+        adjustMenuToolBar();
+
         connectSigSlot();
 
         this->setLayout(this->custGrid);
 
 
+        integratedMenu = new Menu();
+
+        Item menuItems ;
+
+        menuItems.setItem(0,55.65,1,1,"Shay");
+        integratedMenu->addItem(menuItems);
+
+        menuItems.setItem(1,30,1,2,"Salata");
+        integratedMenu->addItem(menuItems);
+
+        menuItems.setItem(1,80,1,3,"la7ma");
+        integratedMenu->addItem(menuItems);
+
+        menuItems.setItem(1,70.5,4,1,"fra5");
+        integratedMenu->addItem(menuItems);
+
+        menuItems.setItem(1,10.5,4,1,"Betngan");
+        integratedMenu->addItem(menuItems);
+
+
+
+
+
 }
 
-void CustomerWidget::adjustToolBar()
+void CustomerWidget::adjustMainToolBar()
 {
     QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
 
@@ -39,6 +66,19 @@ void CustomerWidget::adjustToolBar()
     custGrid->addWidget(toolBar,0,0,1,-1);
 }
 
+void CustomerWidget::adjustMenuToolBar()
+{
+
+
+    toolBarMenu->setIconSize(QSize(70,70));
+    toolBarMenu->setOrientation(Qt::Horizontal);
+    toolBarMenu->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
+    toolBarMenu->setFont(QFont("Helvetica [Cronyx]",9,65,0));
+
+
+
+}
+
 void CustomerWidget::connectSigSlot()
 {
     // Toolbar Connect
@@ -50,14 +90,27 @@ void CustomerWidget::connectSigSlot()
 
 }
 
+
+
 void CustomerWidget::handleToolBar(QAction *trigAction)
 {
+    float sum = 0;
     if(trigAction->text() == "Order")
     {
+        for (unsigned int i = 0;i < integratedMenu->getMenuSize();i++)
+        {
+            sum += integratedMenu->MainMenu[i].getSpinBox()->value() *
+                   integratedMenu->MainMenu[i].get_price();
 
+        }
     }
     else if (trigAction->text() == "Menu")
     {
+
+
+        viewMenu();
+
+
 
     }
     else if (trigAction->text() == "Status")
@@ -106,10 +159,25 @@ void CustomerWidget::feedbackSubmitted()
         }
 
         feedbackFile.close();
+        delete plainText;
+        delete submit;
+
     }
     else{}
 
+}
 
+void CustomerWidget::viewMenu()
+{
+    QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
+    for (int i =0;i< integratedMenu->getMenuSize() ;i++)
+    {
+        QIcon I_Order(iconPath + "meal.png");
+        QString item(integratedMenu->MainMenu[i].get_itemname());
+        toolBarMenu->addAction(I_Order,item);
+        custGrid->addWidget(integratedMenu->MainMenu[i].getSpinBox(),3,1+i,1,1);
+    }
+    custGrid->addWidget(toolBarMenu,2,1,2,2);
 }
 
 
