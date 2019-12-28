@@ -8,9 +8,13 @@ CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
         submit = new QPushButton("Submit FeedBack");
 
         toolBarMenu = new QToolBar();
+        toolBarTable = new QToolBar[3];
+
+        systemTable = new Table[6];
 
         adjustMainToolBar();
         adjustMenuToolBar();
+        adjustTableToolBar();
 
         connectSigSlot();
 
@@ -79,6 +83,17 @@ void CustomerWidget::adjustMenuToolBar()
 
 }
 
+void CustomerWidget::adjustTableToolBar()
+{
+    for (int i = 0;i<3;i++)
+    {
+        toolBarTable[i].setIconSize(QSize(70,70));
+        toolBarTable[i].setOrientation(Qt::Vertical);
+        toolBarTable[i].setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
+        toolBarTable[i].setFont(QFont("Helvetica [Cronyx]",9,65,0));
+    }
+}
+
 void CustomerWidget::connectSigSlot()
 {
     // Toolbar Connect
@@ -130,6 +145,7 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
     else if (trigAction->text() == "Table")
     {
 
+        viewTable();
     }
     else
     {
@@ -178,6 +194,34 @@ void CustomerWidget::viewMenu()
         custGrid->addWidget(integratedMenu->MainMenu[i].getSpinBox(),3,1+i,1,1);
     }
     custGrid->addWidget(toolBarMenu,2,1,2,2);
+}
+
+void CustomerWidget::viewTable()
+{
+
+    QString tableIconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
+
+    QIcon I_Table1(tableIconPath + "table.png"); QString S_Table1("Table 1");
+    QIcon I_Table2(tableIconPath + "table.png"); QString S_Table2("Table 2");
+    QIcon I_Table3(tableIconPath + "table.png"); QString S_Table3("Table 3");
+    QIcon I_Table4(tableIconPath + "table.png"); QString S_Table4("Table 4");
+    QIcon I_Table5(tableIconPath + "table.png"); QString S_Table5("Table 5");
+    QIcon I_Table6(tableIconPath + "table.png"); QString S_Table6("Table 6");
+
+    toolBarTable[0].addAction(I_Table1,S_Table1);
+    toolBarTable[0].addAction(I_Table2,S_Table2);
+
+    toolBarTable[1].addAction(I_Table3,S_Table3);
+    toolBarTable[1].addAction(I_Table4,S_Table4);
+
+    toolBarTable[2].addAction(I_Table5,S_Table5);
+    toolBarTable[2].addAction(I_Table6,S_Table6);
+
+
+    custGrid->addWidget(&toolBarTable[0],5,2,1,1);
+    custGrid->addWidget(&toolBarTable[1],6,2,1,1);
+    custGrid->addWidget(&toolBarTable[2],7,2,1,1);
+
 }
 
 

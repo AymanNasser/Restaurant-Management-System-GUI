@@ -1,0 +1,10 @@
+debug/customerwidget.o
+debug/item.o
+debug/main.o
+debug/adminwidget.o
+debug/mainwidget.o
+debug/menu.o
+debug/table.o
+debug/moc_adminwidget.o
+debug/moc_customerwidget.o
+debug/moc_mainwidget.o

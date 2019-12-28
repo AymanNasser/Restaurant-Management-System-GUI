@@ -30,14 +30,16 @@ SOURCES += \
         main.cpp \
         adminwidget.cpp \
         mainwidget.cpp \
-        menu.cpp
+        menu.cpp \
+        table.cpp
 
 HEADERS += \
         adminwidget.h \
         customerwidget.h \
         item.h \
         mainwidget.h \
-        menu.h
+        menu.h \
+        table.h
 
 FORMS += \
         adminwidget.ui

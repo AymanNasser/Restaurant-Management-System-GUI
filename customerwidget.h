@@ -19,8 +19,12 @@
 #include <iostream>
 #include <QSpinBox>
 #include <QDebug>
-#include "menu.h"
+
 #include <bits/stdc++.h>
+
+
+#include "menu.h"
+#include "table.h"
 
 using namespace std;
 
@@ -31,10 +35,12 @@ class CustomerWidget : public QWidget
 
 private:
     QToolBar *toolBar, *toolBarMenu;
+    QToolBar *toolBarTable;
     QGridLayout *custGrid;
     QMessageBox *errorMessage;
     QPlainTextEdit *plainText;
     QPushButton *submit;
+    Table *systemTable;
 
 
 
@@ -51,10 +57,15 @@ public:
     // Adjusting Menu ToolBar
     void adjustMenuToolBar();
 
+    // Adjusting table toolbar
+    void adjustTableToolBar();
+
     // Connect signals & slots in a single function
     void connectSigSlot();
 
     void viewMenu();
+
+    void viewTable();
 
 
 

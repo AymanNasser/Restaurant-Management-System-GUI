@@ -1,0 +1,10 @@
+release/customerwidget.o
+release/item.o
+release/main.o
+release/adminwidget.o
+release/mainwidget.o
+release/menu.o
+release/table.o
+release/moc_adminwidget.o
+release/moc_customerwidget.o
+release/moc_mainwidget.o
