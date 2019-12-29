@@ -9,14 +9,6 @@ CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
         toolBar = new QToolBar();
         errorMessage = new QMessageBox();
 
-        reserveTable = new QPushButton("Reserve Table");
-        tableNumber = new QLineEdit();
-        systemTable = new Table[6];
-
-        toolBarTable[0] = new QToolBar();
-        toolBarTable[1] = new QToolBar();
-        toolBarTable[2] = new QToolBar();
-
         // MainToolbar Connect
         connect(toolBar,SIGNAL(actionTriggered(QAction *)),this,SLOT(handleToolBar(QAction*)));
 
@@ -93,12 +85,12 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
         MENU_FLAG = true;
         if(TABLE_FLAG == 1)
         {
-
+            deleteTable();
+            TABLE_FLAG = false;
         }
         else if (FEEDBACK_FLAG == 1)
         {
-            delete plainText;
-            delete submit;
+            deleteFeedback();
             FEEDBACK_FLAG = false;
         }
         else
@@ -126,16 +118,12 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
         FEEDBACK_FLAG = true;
         if(TABLE_FLAG == 1)
         {
-
+            deleteTable();
+            TABLE_FLAG = false;
         }
         else if (MENU_FLAG == 1)
         {
-            delete toolBarMenu;
-            delete orderPrice;
-            for (unsigned char i=0; i< MENU_ITEM_NO; i++)
-            {
-                delete spinBox[i];
-            }
+            deleteMenu();
             MENU_FLAG = false;
         }
         else
@@ -155,12 +143,23 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
     }
     else if (trigAction->text() == "Table")
     {
-
+        TABLE_FLAG = true;
+        if(MENU_FLAG == 1)
+        {
+            deleteMenu();
+            MENU_FLAG = false;
+        }
+        else if (FEEDBACK_FLAG == 1)
+        {
+            deleteFeedback();
+        }
+        else
+        {
+            viewTable();
+        }
     }
-    else
-    {
 
-    }
+    else{}
 
 
 }
@@ -220,14 +219,20 @@ void CustomerWidget::viewMenu()
 void CustomerWidget::viewTable()
 {
 
-    QString tableIconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
+    reserveTable = new QPushButton("Reserve Table");
+    tableNumber = new QLineEdit();
+    systemTable = new Table[6];
 
-    QIcon I_Table1(tableIconPath + "table.png"); QString S_Table1("Table 1 \nStatus: " + systemTable[0].getTableStatus());
-    QIcon I_Table2(tableIconPath + "table.png"); QString S_Table2("Table 2 \nStatus: " + systemTable[1].getTableStatus());
-    QIcon I_Table3(tableIconPath + "table.png"); QString S_Table3("Table 3 \nStatus: " + systemTable[2].getTableStatus());
-    QIcon I_Table4(tableIconPath + "table.png"); QString S_Table4("Table 4 \nStatus: " + systemTable[3].getTableStatus());
-    QIcon I_Table5(tableIconPath + "table.png"); QString S_Table5("Table 5 \nStatus: " + systemTable[4].getTableStatus());
-    QIcon I_Table6(tableIconPath + "table.png"); QString S_Table6("Table 6 \nStatus: " + systemTable[5].getTableStatus());
+    toolBarTable[0] = new QToolBar();
+    toolBarTable[1] = new QToolBar();
+    toolBarTable[2] = new QToolBar();
+
+    QIcon I_Table1(iconPath + "table.png"); QString S_Table1("Table 1 \nStatus: " + systemTable[0].getTableStatus());
+    QIcon I_Table2(iconPath + "table.png"); QString S_Table2("Table 2 \nStatus: " + systemTable[1].getTableStatus());
+    QIcon I_Table3(iconPath + "table.png"); QString S_Table3("Table 3 \nStatus: " + systemTable[2].getTableStatus());
+    QIcon I_Table4(iconPath + "table.png"); QString S_Table4("Table 4 \nStatus: " + systemTable[3].getTableStatus());
+    QIcon I_Table5(iconPath + "table.png"); QString S_Table5("Table 5 \nStatus: " + systemTable[4].getTableStatus());
+    QIcon I_Table6(iconPath + "table.png"); QString S_Table6("Table 6 \nStatus: " + systemTable[5].getTableStatus());
 
     toolBarTable[0]->addAction(I_Table1,S_Table1);
     toolBarTable[0]->addAction(I_Table2,S_Table2);
@@ -275,6 +280,34 @@ void CustomerWidget::calcOrderPrice()
     }
     orderPrice->setText(QString::number(sum));
 
+}
+
+void CustomerWidget::deleteMenu()
+{
+    delete toolBarMenu;
+    delete orderPrice;
+    delete order;
+    for (unsigned char i=0; i< MENU_ITEM_NO; i++)
+    {
+        delete spinBox[i];
+    }
+}
+
+void CustomerWidget::deleteTable()
+{
+    delete reserveTable;
+    delete tableNumber;
+    for (unsigned char i=0; i< TABLES_BAR ; i++)
+    {
+        delete toolBarTable[i];
+    }
+}
+
+void CustomerWidget::deleteFeedback()
+{
+    delete plainText;
+    delete submit;
+    FEEDBACK_FLAG = false;
 }
 
 void CustomerWidget::setTable()

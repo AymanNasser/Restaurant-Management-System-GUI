@@ -31,6 +31,7 @@
 #include "table.h"
 
 #define MENU_ITEM_NO 5
+#define TABLES_BAR 3
 using namespace std;
 
 
@@ -81,6 +82,11 @@ public:
     void menuInit();
 
     void calcOrderPrice();
+
+    void deleteMenu();
+    void deleteTable();
+    void deleteFeedback();
+
 
 signals:
 
