@@ -33,6 +33,7 @@ void CustomerWidget::adjustMainToolBar()
     toolBar->setOrientation(Qt::Horizontal);
     toolBar->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
     toolBar->setFont(QFont("Helvetica [Cronyx]",9,65,0));
+    toolBar->setAllowedAreas(Qt::ToolBarArea::TopToolBarArea);
 
     toolBar->addAction(I_Menu,S_Menu);
     toolBar->addAction(I_FeedBack,S_FeedBack);
@@ -41,7 +42,7 @@ void CustomerWidget::adjustMainToolBar()
 
 
 
-    custGrid->addWidget(toolBar,0,0,1,-1,Qt::AlignCenter | Qt::AlignTop );
+    custGrid->addWidget(toolBar,0,0,1,1,Qt::AlignCenter | Qt::AlignTop );
 
     // Initializing The Global Flags
     TABLE_FLAG = false;
@@ -54,7 +55,7 @@ void CustomerWidget::adjustMainToolBar()
 
 void CustomerWidget::adjustMenuToolBar()
 {
-    toolBarMenu->setIconSize(QSize(70,70));
+    toolBarMenu->setIconSize(QSize(60,60));
     toolBarMenu->setOrientation(Qt::Horizontal);
     toolBarMenu->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
     toolBarMenu->setFont(QFont("Helvetica [Cronyx]",9,65,0));
@@ -96,15 +97,21 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
         else
         {
             toolBarMenu = new QToolBar();
-            order = new QPushButton();
+            order = new QPushButton("Order");
+            order->setMaximumSize(QSize(100,100));
+            order->setStyleSheet("QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} "
+                                 "QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}");
 
             // Order QToolButton connect
             connect(order,SIGNAL(clicked()),this,SLOT(orderButton()));
+
             adjustMenuToolBar();
             menuInit();
             viewMenu();
-            custGrid->addWidget(toolBarMenu,2,1,2,2);
-            custGrid->addWidget(order,4,4,1,1,Qt::AlignCenter);
+
+            custGrid->addWidget(toolBarMenu,1,3,1,1,Qt::AlignTop | Qt::AlignCenter);
+
+            custGrid->addWidget(order,4,4,1,1,Qt::AlignVCenter);
         }
 
     }
@@ -202,8 +209,14 @@ void CustomerWidget::viewMenu()
     for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
         spinBox[i] = new QSpinBox();
-        custGrid->addWidget(spinBox[i],3,1+i,1,1);
+        custGrid->addWidget(spinBox[i],2,i,1,1,Qt::AlignCenter);
+        spinBox[i]->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; "
+                                  "border-color: gray ; background-color:rgb(201, 201, 201);");
+        spinBox[i]->setMaximumSize(QSize(50,70));
     }
+
+
+
 
     for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
@@ -213,7 +226,8 @@ void CustomerWidget::viewMenu()
     }
     orderPrice = new QLineEdit();
     orderPrice->setReadOnly(true);
-    custGrid->addWidget(orderPrice,4,4,1,1,Qt::AlignRight);
+    orderPrice->setMinimumSize(QSize(50,50));
+    //custGrid->addWidget(orderPrice,3,5,1,1,Qt::AlignRight);
 }
 
 void CustomerWidget::viewTable()
@@ -243,9 +257,9 @@ void CustomerWidget::viewTable()
     toolBarTable[2]->addAction(I_Table5,S_Table5);
     toolBarTable[2]->addAction(I_Table6,S_Table6);
 
-    custGrid->addWidget(toolBarTable[0],5,2,3,1);
-    custGrid->addWidget(toolBarTable[1],5,3,1,1);
-    custGrid->addWidget(toolBarTable[2],5,4,1,1);
+    custGrid->addWidget(toolBarTable[0],5,1,1,1);
+    custGrid->addWidget(toolBarTable[1],5,2,1,1);
+    custGrid->addWidget(toolBarTable[2],5,3,1,1);
 
 }
 
