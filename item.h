@@ -18,7 +18,6 @@ private:
     bool type, stockState;
     int itemID;
     QString itemname;
-    QSpinBox *itemSpinBox;
 public:
 
     /* A function to set the attributes of items , it take input itemtype , price , stockstate , itemit, itemname */
@@ -30,8 +29,6 @@ public:
     float get_totalPrice();
     int get_itemID();
     QString get_itemname();
-    QSpinBox *getSpinBox();
-    void setSpinBox();
 
     /* Operator Overloaded to compare between two item objects */
     bool operator == (Item item1);

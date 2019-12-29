@@ -10,7 +10,6 @@ void Item::setItem(bool itemType, float itemPrice, bool itemStockState, int Item
     itemID = ItemID;
     itemname = itemName;
 
-    itemSpinBox = new QSpinBox();
 }
 
 float Item::get_price()
@@ -41,16 +40,6 @@ int Item::get_itemID()
 QString Item::get_itemname()
 {
     return itemname;
-}
-
-QSpinBox *Item::getSpinBox()
-{
-    return itemSpinBox;
-}
-
-void Item::setSpinBox()
-{
-    itemSpinBox = new QSpinBox() ;
 }
 
 bool Item::operator ==(Item item1)

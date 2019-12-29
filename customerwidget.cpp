@@ -1,51 +1,27 @@
 #include "customerwidget.h"
 
+
 CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
 {
-        toolBar = new QToolBar();
         custGrid = new QGridLayout();
+        this->setLayout(this->custGrid);
+
+        toolBar = new QToolBar();
         errorMessage = new QMessageBox();
 
-        toolBarMenu = new QToolBar();
-        submit = new QPushButton("Submit FeedBack");
         reserveTable = new QPushButton("Reserve Table");
-
         tableNumber = new QLineEdit();
+        systemTable = new Table[6];
 
         toolBarTable[0] = new QToolBar();
         toolBarTable[1] = new QToolBar();
         toolBarTable[2] = new QToolBar();
 
+        // MainToolbar Connect
+        connect(toolBar,SIGNAL(actionTriggered(QAction *)),this,SLOT(handleToolBar(QAction*)));
 
-        systemTable = new Table[6];
-
+        // Calling GUI Flow Functions
         adjustMainToolBar();
-        //adjustMenuToolBar();
-        adjustTableToolBar();
-
-        connectSigSlot();
-
-        this->setLayout(this->custGrid);
-
-
-        integratedMenu = new Menu();
-
-        Item menuItems ;
-
-        menuItems.setItem(0,55.65,1,1,"Shay");
-        integratedMenu->addItem(menuItems);
-
-        menuItems.setItem(1,30,1,2,"Salata");
-        integratedMenu->addItem(menuItems);
-
-        menuItems.setItem(1,80,1,3,"la7ma");
-        integratedMenu->addItem(menuItems);
-
-        menuItems.setItem(1,70.5,4,1,"fra5");
-        integratedMenu->addItem(menuItems);
-
-        menuItems.setItem(1,10.5,4,1,"Betngan");
-        integratedMenu->addItem(menuItems);
 
 
 
@@ -55,9 +31,7 @@ CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
 
 void CustomerWidget::adjustMainToolBar()
 {
-    QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
 
-    QIcon I_Order(iconPath + "meal.png"); QString S_Order("Order");
     QIcon I_Menu(iconPath + "menu.png"); QString S_Menu("Menu");
     QIcon I_FeedBack(iconPath + "questionnaire.png"); QString S_FeedBack("FeedBack");
     QIcon I_Table(iconPath + "table.png"); QString S_Table("Table");
@@ -68,13 +42,22 @@ void CustomerWidget::adjustMainToolBar()
     toolBar->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
     toolBar->setFont(QFont("Helvetica [Cronyx]",9,65,0));
 
-    toolBar->addAction(I_Order,S_Order);
     toolBar->addAction(I_Menu,S_Menu);
     toolBar->addAction(I_FeedBack,S_FeedBack);
     toolBar->addAction(I_Table,S_Table);
     toolBar->addAction(I_Status,S_Status);
 
-    custGrid->addWidget(toolBar,0,0,1,-1);
+
+
+    custGrid->addWidget(toolBar,0,0,1,-1,Qt::AlignCenter | Qt::AlignTop );
+
+    // Initializing The Global Flags
+    TABLE_FLAG = false;
+    FEEDBACK_FLAG = false;
+    MENU_FLAG = false;
+
+
+
 }
 
 void CustomerWidget::adjustMenuToolBar()
@@ -98,13 +81,6 @@ void CustomerWidget::adjustTableToolBar()
 
 void CustomerWidget::connectSigSlot()
 {
-    // Toolbar Connect
-    connect(toolBar,SIGNAL(actionTriggered(QAction *)),this,SLOT(handleToolBar(QAction*)));
-
-
-    // Submit QPushButton connect
-    connect(submit,SIGNAL(clicked()),this,SLOT(feedbackSubmitted()));
-
     connect(reserveTable,SIGNAL(clicked()),this,SLOT(setTable()));
 }
 
@@ -112,44 +88,32 @@ void CustomerWidget::connectSigSlot()
 
 void CustomerWidget::handleToolBar(QAction *trigAction)
 {
-    float sum = 0;
-    static char flag1 = 0;
-    static char flag2 = 0;
-    static char flag3 = 0;
-    static char flag4 = 0;
-
-    if(trigAction->text() == "Order" && flag1 == 0)
+    if (trigAction->text() == "Menu")
     {
-
-        flag2 = 0; flag3 = 0; flag4 = 0;
-        for (unsigned int i = 0;i < integratedMenu->getMenuSize();i++)
-        {
-            sum += integratedMenu->MainMenu[i].getSpinBox()->value() *
-                   integratedMenu->MainMenu[i].get_price();
-
-        }
-        flag1 = 1;
-
-    }
-    else if (trigAction->text() == "Menu" && flag2 == 0)
-    {
-        if(flag4 == 1 )
+        MENU_FLAG = true;
+        if(TABLE_FLAG == 1)
         {
 
-            delete toolBarTable[0];
-            delete toolBarTable[1];
-            delete toolBarTable[2];
-            delete reserveTable;
-            delete tableNumber;
         }
-        else if (flag3 == 1)
+        else if (FEEDBACK_FLAG == 1)
         {
             delete plainText;
             delete submit;
+            FEEDBACK_FLAG = false;
         }
-        flag1 = 0; flag3 = 0; flag4 = 0;
-        viewMenu();
-        flag2 = 1;
+        else
+        {
+            toolBarMenu = new QToolBar();
+            order = new QPushButton();
+
+            // Order QToolButton connect
+            connect(order,SIGNAL(clicked()),this,SLOT(orderButton()));
+            adjustMenuToolBar();
+            menuInit();
+            viewMenu();
+            custGrid->addWidget(toolBarMenu,2,1,2,2);
+            custGrid->addWidget(order,4,4,1,1,Qt::AlignCenter);
+        }
 
     }
     else if (trigAction->text() == "Status")
@@ -157,51 +121,41 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
 
     }
 
-    else if (trigAction->text() == "FeedBack" && flag3 == 0)
+    else if (trigAction->text() == "FeedBack")
     {
-        if(flag4 == 1 )
+        FEEDBACK_FLAG = true;
+        if(TABLE_FLAG == 1)
         {
 
-            delete toolBarTable[0];
-            delete toolBarTable[1];
-            delete toolBarTable[2];
-            delete reserveTable;
-            delete tableNumber;
         }
-        else if (flag2 == 1)
+        else if (MENU_FLAG == 1)
         {
             delete toolBarMenu;
-            for (int i =0;i< integratedMenu->getMenuSize() ;i++)
+            delete orderPrice;
+            for (unsigned char i=0; i< MENU_ITEM_NO; i++)
             {
-                delete integratedMenu->MainMenu[i].getSpinBox();
+                delete spinBox[i];
             }
+            MENU_FLAG = false;
         }
-        flag1 = 0; flag2 = 0; flag4 = 0;
-        plainText = new QPlainTextEdit();
-        custGrid->addWidget(plainText,1,0,-1,4);
-        custGrid->addWidget(submit,5,4,1,1);
-        flag3 = 1;
+        else
+        {
+
+            submit = new QPushButton();
+            plainText = new QPlainTextEdit();
+
+            // Submit QToolButton connect
+            connect(submit,SIGNAL(clicked()),this,SLOT(feedbackSubmitted()));
+
+            // Adding Widgets to GridLayout
+            custGrid->addWidget(plainText,1,1,1,4);
+            custGrid->setAlignment(plainText,Qt::AlignLeft);
+            custGrid->addWidget(submit,5,5,1,1);
+        }
     }
-    else if (trigAction->text() == "Table" && flag4 == 0)
+    else if (trigAction->text() == "Table")
     {
-        if(flag3 == 1 )
-        {
-            delete plainText;
-            delete submit;
-        }
-        else if (flag2 == 1)
-        {
-            delete toolBarMenu;
-            for (int i =0;i< integratedMenu->getMenuSize() ;i++)
-            {
-                delete integratedMenu->MainMenu[i].getSpinBox();
-            }
-        }
-        flag1 = 0; flag2 = 0; flag3 = 0;
-        viewTable();
-        custGrid->addWidget(tableNumber,7,3,1,1);
-        custGrid->addWidget(reserveTable,6,3,1,1);
-        flag4 = 1;
+
     }
     else
     {
@@ -239,23 +193,28 @@ void CustomerWidget::feedbackSubmitted()
 
 }
 
+void CustomerWidget::orderButton()
+{
+    calcOrderPrice();
+}
+
 void CustomerWidget::viewMenu()
 {
-    toolBarMenu = new QToolBar();
-    for (int i =0;i< integratedMenu->getMenuSize() ;i++)
+    for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
-        integratedMenu->MainMenu[i].setSpinBox();
+        spinBox[i] = new QSpinBox();
+        custGrid->addWidget(spinBox[i],3,1+i,1,1);
     }
-    adjustMenuToolBar();
-    QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
-    for (int i =0;i< integratedMenu->getMenuSize() ;i++)
+
+    for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
         QIcon I_Order(iconPath + "meal.png");
         QString item(integratedMenu->MainMenu[i].get_itemname());
         toolBarMenu->addAction(I_Order,item);
-        custGrid->addWidget(integratedMenu->MainMenu[i].getSpinBox(),3,1+i,1,1);
     }
-    custGrid->addWidget(toolBarMenu,2,1,2,2);
+    orderPrice = new QLineEdit();
+    orderPrice->setReadOnly(true);
+    custGrid->addWidget(orderPrice,4,4,1,1,Qt::AlignRight);
 }
 
 void CustomerWidget::viewTable()
@@ -279,9 +238,42 @@ void CustomerWidget::viewTable()
     toolBarTable[2]->addAction(I_Table5,S_Table5);
     toolBarTable[2]->addAction(I_Table6,S_Table6);
 
-    custGrid->addWidget(toolBarTable[0],5,2,1,1);
+    custGrid->addWidget(toolBarTable[0],5,2,3,1);
     custGrid->addWidget(toolBarTable[1],5,3,1,1);
     custGrid->addWidget(toolBarTable[2],5,4,1,1);
+
+}
+
+void CustomerWidget::menuInit()
+{
+    integratedMenu = new Menu();
+    Item menuItems ;
+
+    menuItems.setItem(0,55.5,1,1,"Shay");
+    integratedMenu->addItem(menuItems);
+
+    menuItems.setItem(1,30,1,2,"Salata");
+    integratedMenu->addItem(menuItems);
+
+    menuItems.setItem(1,80,1,3,"la7ma");
+    integratedMenu->addItem(menuItems);
+
+    menuItems.setItem(1,70.5,4,1,"fra5");
+    integratedMenu->addItem(menuItems);
+
+    menuItems.setItem(1,10.5,4,1,"Betngan");
+    integratedMenu->addItem(menuItems);
+
+}
+
+void CustomerWidget::calcOrderPrice()
+{
+    float sum = 0;
+    for (unsigned char i = 0; i < MENU_ITEM_NO ;i++)
+    {
+        sum += spinBox[i]->value() * integratedMenu->MainMenu[i].get_price();
+    }
+    orderPrice->setText(QString::number(sum));
 
 }
 

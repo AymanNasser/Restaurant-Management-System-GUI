@@ -9,6 +9,7 @@
 
 
 #include <bits/stdc++.h>
+
 using namespace std;
 
 class MainWidget : public QMainWindow
@@ -17,18 +18,16 @@ class MainWidget : public QMainWindow
 private:
     CustomerWidget *customer;
 
+
 public:
     explicit MainWidget(QWidget *parent = nullptr);
 
-//    vector <Order*> AllOrdersVect;
-//        Order customizedOrder;
-
-//        Table tablesArr;
 
 
 signals:
 
 public slots:
+
 };
 
 #endif // MAINWIDGET_H

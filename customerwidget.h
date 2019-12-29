@@ -10,6 +10,8 @@
 #include <QGridLayout>
 #include <QString>
 #include <QIcon>
+#include <QSize>
+#include <QFont>
 #include <QCoreApplication>
 #include <QMessageBox>
 #include <QPushButton>
@@ -20,6 +22,7 @@
 #include <QSpinBox>
 #include <QDebug>
 #include <QLineEdit>
+#include <QToolButton>
 
 #include <bits/stdc++.h>
 
@@ -27,7 +30,11 @@
 #include "menu.h"
 #include "table.h"
 
+#define MENU_ITEM_NO 5
 using namespace std;
+
+
+static bool MENU_FLAG, FEEDBACK_FLAG, TABLE_FLAG;
 
 
 class CustomerWidget : public QWidget
@@ -40,9 +47,12 @@ private:
     QGridLayout *custGrid;
     QMessageBox *errorMessage;
     QPlainTextEdit *plainText;
-    QPushButton *submit,*reserveTable;
+    QPushButton *reserveTable;
     Table *systemTable;
-    QLineEdit *tableNumber;
+    QLineEdit *tableNumber, *orderPrice;
+    QPushButton *order,*submit;
+    QSpinBox *spinBox[MENU_ITEM_NO];
+    const QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
 
 
 
@@ -68,12 +78,16 @@ public:
 
     void viewTable();
 
+    void menuInit();
+
+    void calcOrderPrice();
 
 signals:
 
 public slots:
     void handleToolBar(QAction*);
     void feedbackSubmitted();
+    void orderButton();
     void setTable();
 
 
