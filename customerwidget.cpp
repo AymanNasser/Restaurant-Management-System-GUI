@@ -30,10 +30,10 @@ void CustomerWidget::adjustMainToolBar()
     QIcon I_Status(iconPath + "loading.png"); QString S_Status("Status");
 
     toolBar->setIconSize(QSize(70,70));
-    toolBar->setOrientation(Qt::Horizontal);
+    toolBar->setOrientation(Qt::Vertical);
     toolBar->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
     toolBar->setFont(QFont("Helvetica [Cronyx]",9,65,0));
-    toolBar->setAllowedAreas(Qt::ToolBarArea::TopToolBarArea);
+    toolBar->setAllowedAreas(Qt::ToolBarArea::LeftToolBarArea);
 
     toolBar->addAction(I_Menu,S_Menu);
     toolBar->addAction(I_FeedBack,S_FeedBack);
@@ -42,7 +42,7 @@ void CustomerWidget::adjustMainToolBar()
 
 
 
-    custGrid->addWidget(toolBar,0,0,1,1,Qt::AlignCenter | Qt::AlignTop );
+    custGrid->addWidget(toolBar,0,0,1,1,Qt::AlignTop | Qt::AlignLeft );
 
     // Initializing The Global Flags
     TABLE_FLAG = false;
@@ -98,7 +98,7 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
         {
             toolBarMenu = new QToolBar();
             order = new QPushButton("Order");
-            order->setMaximumSize(QSize(100,100));
+            order->setMaximumSize(QSize(300,300));
             order->setStyleSheet("QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} "
                                  "QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}");
 
@@ -109,9 +109,9 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
             menuInit();
             viewMenu();
 
-            custGrid->addWidget(toolBarMenu,1,3,1,1,Qt::AlignTop | Qt::AlignCenter);
+            custGrid->addWidget(toolBarMenu,3,3,1,1,Qt::AlignLeft);
 
-            custGrid->addWidget(order,4,4,1,1,Qt::AlignVCenter);
+            custGrid->addWidget(order,4,3,2,2,Qt::AlignBottom);
         }
 
     }
@@ -209,25 +209,22 @@ void CustomerWidget::viewMenu()
     for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
         spinBox[i] = new QSpinBox();
-        custGrid->addWidget(spinBox[i],2,i,1,1,Qt::AlignCenter);
+        custGrid->addWidget(spinBox[i],4,5,1,1);
         spinBox[i]->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; "
                                   "border-color: gray ; background-color:rgb(201, 201, 201);");
-        spinBox[i]->setMaximumSize(QSize(50,70));
+        spinBox[i]->setMaximumSize(QSize(50,50));
     }
 
-
-
-
+    custGrid->addWidget(spinBox[3],4,4,1,1);
+    custGrid->addWidget(spinBox[3],4,2,1,1);
+    custGrid->addWidget(spinBox[3],4,3,1,1);
     for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
         QIcon I_Order(iconPath + "meal.png");
         QString item(integratedMenu->MainMenu[i].get_itemname());
         toolBarMenu->addAction(I_Order,item);
     }
-    orderPrice = new QLineEdit();
-    orderPrice->setReadOnly(true);
-    orderPrice->setMinimumSize(QSize(50,50));
-    //custGrid->addWidget(orderPrice,3,5,1,1,Qt::AlignRight);
+
 }
 
 void CustomerWidget::viewTable()
@@ -292,8 +289,10 @@ void CustomerWidget::calcOrderPrice()
     {
         sum += spinBox[i]->value() * integratedMenu->MainMenu[i].get_price();
     }
-    orderPrice->setText(QString::number(sum));
-
+    errorMessage->setIcon(QMessageBox::Information);
+    errorMessage->setTextFormat(Qt::TextFormat::RichText);
+    errorMessage->setInformativeText("Order Price is: " + QString::number(sum));
+    errorMessage->show();
 }
 
 void CustomerWidget::deleteMenu()
