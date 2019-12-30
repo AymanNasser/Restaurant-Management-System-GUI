@@ -1,4 +1,4 @@
-#include "customerwidget.h"
+    #include "customerwidget.h"
 
 
 CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
@@ -135,15 +135,20 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
         else
         {
 
-            submit = new QPushButton();
+            submit = new QPushButton("Submit");
+            submit->setMinimumSize(100,100);
+            submit->setStyleSheet("QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} "
+                                  "QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}");
             plainText = new QPlainTextEdit();
+            plainText->setStyleSheet("background-color:grey; font-size: 15px; color:white;");
+            plainText->setPlaceholderText("Insert Your FeedBack");
 
             // Submit QToolButton connect
             connect(submit,SIGNAL(clicked()),this,SLOT(feedbackSubmitted()));
 
             // Adding Widgets to GridLayout
-            custGrid->addWidget(plainText,1,1,1,4);
-            custGrid->setAlignment(plainText,Qt::AlignLeft);
+            custGrid->addWidget(plainText,1,1,1,-1);
+
             custGrid->addWidget(submit,5,5,1,1);
         }
     }
@@ -158,6 +163,7 @@ void CustomerWidget::handleToolBar(QAction *trigAction)
         else if (FEEDBACK_FLAG == 1)
         {
             deleteFeedback();
+            FEEDBACK_FLAG = false ;
         }
         else
         {
@@ -209,6 +215,10 @@ void CustomerWidget::orderButton()
 void CustomerWidget::reserveTables()
 {
     setTable();
+    deleteTable();
+    viewTable();
+    adjustTableToolBar();
+
 }
 
 void CustomerWidget::viewMenu()
@@ -282,6 +292,7 @@ void CustomerWidget::menuInit()
     integratedMenu = new Menu();
     Item menuItems ;
 
+
     menuItems.setItem(0,55.5,1,1,"Shay");
     integratedMenu->addItem(menuItems);
 
@@ -337,7 +348,7 @@ void CustomerWidget::deleteFeedback()
 {
     delete plainText;
     delete submit;
-    FEEDBACK_FLAG = false;
+
 }
 
 void CustomerWidget::setTable()
@@ -345,12 +356,13 @@ void CustomerWidget::setTable()
     if(tableNumber->isModified())
     {
         systemTable[tableNumber->text().toInt()-1].setTableStatus();
-
     }
 
     else
     {
         errorMessage->setInformativeText("Please Specify Table No.");
+        errorMessage->setIcon(QMessageBox::Warning);
+        errorMessage->setTextFormat(Qt::TextFormat::RichText);
         errorMessage->show();
     }
 
