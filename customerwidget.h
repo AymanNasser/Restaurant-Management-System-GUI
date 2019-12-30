@@ -30,7 +30,7 @@
 #include "menu.h"
 #include "table.h"
 
-#define MENU_ITEM_NO 5
+#define MENU_ITEM_NO 6
 #define TABLES_BAR 3
 
 using namespace std;

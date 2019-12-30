@@ -15,10 +15,6 @@ CustomerWidget::CustomerWidget(QWidget *parent) : QWidget(parent)
         // Calling GUI Flow Functions
         adjustMainToolBar();
 
-
-
-
-
 }
 
 void CustomerWidget::adjustMainToolBar()
@@ -229,13 +225,13 @@ void CustomerWidget::viewMenu()
         spinBox[i]->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; "
                                   "border-color: gray ; background-color:rgb(201, 201, 201);");
         spinBox[i]->setMaximumSize(QSize(50,50));
-        custGrid->addWidget(spinBox[i],2,1+i,1,1,Qt::AlignHCenter);
+        custGrid->addWidget(spinBox[i],2,i,1,1,Qt::AlignHCenter);
     }
 
 
     for (unsigned char i =0 ; i <MENU_ITEM_NO ; i++)
     {
-        QIcon I_Order(iconPath + "meal.png");
+        QIcon I_Order(iconPath + QString::number(i+1) + ".png");
         QString item(integratedMenu->MainMenu[i].get_itemname());
         toolBarMenu->addAction(I_Order,item);
     }
@@ -263,12 +259,12 @@ void CustomerWidget::viewTable()
     toolBarTable[1] = new QToolBar();
     toolBarTable[2] = new QToolBar();
 
-    QIcon I_Table1(iconPath + "table.png"); QString S_Table1("Table 1 \nStatus: " + systemTable[0].getTableStatus());
-    QIcon I_Table2(iconPath + "table.png"); QString S_Table2("Table 2 \nStatus: " + systemTable[1].getTableStatus());
-    QIcon I_Table3(iconPath + "table.png"); QString S_Table3("Table 3 \nStatus: " + systemTable[2].getTableStatus());
-    QIcon I_Table4(iconPath + "table.png"); QString S_Table4("Table 4 \nStatus: " + systemTable[3].getTableStatus());
-    QIcon I_Table5(iconPath + "table.png"); QString S_Table5("Table 5 \nStatus: " + systemTable[4].getTableStatus());
-    QIcon I_Table6(iconPath + "table.png"); QString S_Table6("Table 6 \nStatus: " + systemTable[5].getTableStatus());
+    QIcon I_Table1(iconPath + "dinner-table.png"); QString S_Table1("Table 1 \nStatus: " + systemTable[0].getTableStatus());
+    QIcon I_Table2(iconPath + "dinner-table.png"); QString S_Table2("Table 2 \nStatus: " + systemTable[1].getTableStatus());
+    QIcon I_Table3(iconPath + "dinner-table.png"); QString S_Table3("Table 3 \nStatus: " + systemTable[2].getTableStatus());
+    QIcon I_Table4(iconPath + "dinner-table.png"); QString S_Table4("Table 4 \nStatus: " + systemTable[3].getTableStatus());
+    QIcon I_Table5(iconPath + "dinner-table.png"); QString S_Table5("Table 5 \nStatus: " + systemTable[4].getTableStatus());
+    QIcon I_Table6(iconPath + "dinner-table.png"); QString S_Table6("Table 6 \nStatus: " + systemTable[5].getTableStatus());
 
     toolBarTable[0]->addAction(I_Table1,S_Table1);
     toolBarTable[0]->addAction(I_Table2,S_Table2);
@@ -292,20 +288,22 @@ void CustomerWidget::menuInit()
     integratedMenu = new Menu();
     Item menuItems ;
 
-
-    menuItems.setItem(0,55.5,1,1,"Shay");
+    menuItems.setItem(0,12,1,1,"Tea");
     integratedMenu->addItem(menuItems);
 
-    menuItems.setItem(1,30,1,2,"Salata");
+    menuItems.setItem(1,22,1,2,"Salad");
     integratedMenu->addItem(menuItems);
 
-    menuItems.setItem(1,80,1,3,"la7ma");
+    menuItems.setItem(1,80,1,3,"Beef");
     integratedMenu->addItem(menuItems);
 
-    menuItems.setItem(1,70.5,4,1,"fra5");
+    menuItems.setItem(1,65,1,4,"Chicken");
     integratedMenu->addItem(menuItems);
 
-    menuItems.setItem(1,10.5,4,1,"Betngan");
+    menuItems.setItem(0,8,1,5,"Water");
+    integratedMenu->addItem(menuItems);
+
+    menuItems.setItem(0,30,1,6,"Juice");
     integratedMenu->addItem(menuItems);
 
 }
