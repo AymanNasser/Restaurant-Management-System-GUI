@@ -209,6 +209,7 @@ void CustomerWidget::orderButton()
 void CustomerWidget::reserveTables()
 {
     setTable();
+    
 }
 
 void CustomerWidget::viewMenu()

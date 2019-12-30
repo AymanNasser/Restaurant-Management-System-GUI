@@ -95,6 +95,7 @@ public slots:
     void handleToolBar(QAction*);
     void feedbackSubmitted();
     void orderButton();
+    void reserveTables();
     void setTable();
 
 
