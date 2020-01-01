@@ -30,7 +30,7 @@
 #include "menu.h"
 #include "table.h"
 
-#define MENU_ITEM_NO 6
+#define MENU_ITEM_NO 5
 #define TABLES_BAR 3
 
 using namespace std;
@@ -54,7 +54,7 @@ private:
     QLineEdit *tableNumber, *orderPrice;
     QPushButton *order,*submit;
     QSpinBox *spinBox[MENU_ITEM_NO];
-    const QString iconPath = QCoreApplication::applicationDirPath() + "/../../Icons/";
+    const QString iconPath = QCoreApplication::applicationDirPath() + "/../Icons/";
 
 
 
